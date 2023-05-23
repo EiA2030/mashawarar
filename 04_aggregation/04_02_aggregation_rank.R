@@ -76,10 +76,10 @@ rank.aggregate <- function(years = NULL,
   nn <- nn[,c(8,3,4,5)]
   # Write output
   write.table(nn, paste0("/home/jovyan/saa-use-case/data/outputs/", "v", format(Sys.Date(), "%Y%m%d"), ".csv"), sep = ",", row.names = FALSE)
-  # # Remove DSSAT Aggregates
-  # for (year in years) {
-  #   file.remove(paste0(path.to.ex, "/", year, "/dssat_aggregate_", year, ".csv"))
-  # }
+  # Remove DSSAT Aggregates
+  for (year in years) {
+    file.remove(paste0(path.to.ex, "/", year, "/dssat_aggregate_", year, ".csv"))
+  }
 }
 
 # Generate a upper & lower CI (taken from: https://stackoverflow.com/questions/48612153/how-to-calculate-confidence-intervals-for-a-vector) 

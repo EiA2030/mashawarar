@@ -22,7 +22,7 @@ dssat.Xdata <- function(coords = NULL,
                     "INGENO" = v[[1]],
                     "CNAME" = v[[2]])
     #Read in template FileX
-    filex <- DSSAT::read_filex("/home/jovyan/saa-use-case/data/inputs/dssat/ABWF2002.MZX")
+    filex <- DSSAT::read_filex(paste0("/home/jovyan/saa-use-case/data/inputs/dssat/xfiles/v", as.character(format(Sys.Date(), "%Y%m%d")), ".MZX"))
     # Define Authorship
     filex$GENERAL$PEOPLE <- "SAA Use Case"
     filex$GENERAL$ADDRESS <- "Excellence in Agronomy Initiative - CGIAR"
@@ -74,8 +74,7 @@ dssat.Xdata <- function(coords = NULL,
     filex$`SIMULATION CONTROLS`$HLAST <- format(as.Date(edate, "%Y-%m-%d"), "%y%j")
     # Add SOIL and WTH references to FileX
     filex$FIELDS$WSTA<-paste0("WHTE", formatC(width = 4, as.integer((pnt-1)), flag = "0"))
-    # filex$FIELDS$ID_SOIL<-paste0('ISDA', formatC(width = 6, as.integer((pnt-1)), flag = "0"))
-    filex$FIELDS$ID_SOIL<-DSSAT::read_sol("SOIL.SOL")[,"PEDON"][[1]]
+    filex$FIELDS$ID_SOIL<-paste0('ISDA', formatC(width = 6, as.integer((pnt-1)), flag = "0"))
     # Prepare the treatment levels of FileX
     for (var in v$C) {
       # Define cultivars
