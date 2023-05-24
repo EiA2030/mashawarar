@@ -19,13 +19,13 @@ agera5 <- function(startDate, endDate, coordPoints = NULL){
     else if (grepl("RelativeHumidity", file, fixed = TRUE)){terra::add(rhum) <- terra::rast(file)}
     else if (grepl("SolarRadiation", file, fixed = TRUE)){terra::add(srad) <- terra::rast(file)}
   }
-  # names(wind) <- as.character(format(as.Date(terra::time(wind)), "%Y%m%d"))
+  names(wind) <- as.character(format(as.Date(terra::time(wind)), "%Y%m%d"))
   names(temp) <- as.character(format(as.Date(terra::time(temp)), "%Y%m%d"))
   names(tmin) <- as.character(format(as.Date(terra::time(tmin)), "%Y%m%d"))
   names(tmax) <- as.character(format(as.Date(terra::time(tmax)), "%Y%m%d"))
   names(rhum) <- as.character(format(as.Date(terra::time(rhum)), "%Y%m%d"))
   names(srad) <- as.character(format(as.Date(terra::time(srad)), "%Y%m%d"))
-  # wind <- wind[[as.character(format(dates, format = "%Y%m%d"))]]
+  wind <- wind[[as.character(format(dates, format = "%Y%m%d"))]]
   temp <- temp[[as.character(format(dates, format = "%Y%m%d"))]]
   tmin <- tmin[[as.character(format(dates, format = "%Y%m%d"))]]
   tmax <- tmax[[as.character(format(dates, format = "%Y%m%d"))]]
@@ -35,7 +35,7 @@ agera5 <- function(startDate, endDate, coordPoints = NULL){
   for (pnt in seq(1:nrow(coordPoints))){
     lon <- coordPoints[pnt, 1]
     lat <- coordPoints[pnt, 2]
-    # z.wind <- terra::extract(wind,data.frame(lon,lat))
+    z.wind <- terra::extract(wind,data.frame(lon,lat))
     z.temp <- terra::extract(temp,data.frame(lon,lat))
     z.tmin <- terra::extract(tmin,data.frame(lon,lat))
     z.tmax <- terra::extract(tmax,data.frame(lon,lat))
@@ -44,7 +44,7 @@ agera5 <- function(startDate, endDate, coordPoints = NULL){
     out <- data.frame("dates" = dates)
     out$X <- lon
     out$Y <- lat
-    # out$WIND <- as.vector(t(z.wind[2:length(z.wind)]))
+    out$WIND <- as.vector(t(z.wind[2:length(z.wind)]))
     out$TEMP <- as.vector(t(z.temp[2:length(z.temp)]))
     out$TMIN <- as.vector(t(z.tmin[2:length(z.tmin)]))
     out$TMAX <- as.vector(t(z.tmax[2:length(z.tmax)]))
@@ -54,7 +54,7 @@ agera5 <- function(startDate, endDate, coordPoints = NULL){
                       "year" = format(as.Date(out$dates), format = "%Y"),
                       "month" = format(as.Date(out$dates), format = "%m"),
                       "day" = format(as.Date(out$dates), format = "%d"),
-                      # "WIND" = out$WIND,
+                      "WIND" = out$WIND,
                       "TEMP" = out$TEMP-273,
                       "TMIN" = out$TMIN-273,
                       "TMAX" = out$TMAX-273,

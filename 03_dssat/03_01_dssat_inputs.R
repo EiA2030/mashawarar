@@ -85,13 +85,11 @@ dssat.extdata <- function(coords = NULL,
         # Load CHIRPS function
         source("/home/jovyan/saa-use-case/functions/02_etl/02_03_etl_chirps.R")
         # Load CHIRTS function
-        # source("/home/jovyan/TRANSFORM/egb/chirts/chirts.R")
+        # source("/home/jovyan/saa-use-case/functions/02_etl/02_05_etl_chirts.R")
         wth <- agera5(startDate = sdate, endDate = edate, coordPoints = data.frame("X" = x, "Y" = y))[c("dates",
-                                                                                                        # "WIND",
-                                                                                                        "TMIN","TMAX","RHUM","SRAD")]
+                                                                                                        "WIND","TMIN","TMAX","RHUM","SRAD")]
         colnames(wth) <- c("DATE",
-                           # "WIND",
-                           "TMIN","TMAX","RHUM","SRAD")
+                           "WIND","TMIN","TMAX","RHUM","SRAD")
         wth$DATE <- format(as.Date(wth$DATE, "%Y-%m-%d"), format = "%y%j")
         prec <- chirps(startDate = sdate, endDate = edate, coordPoints = data.frame("X" = x, "Y" = y))
         wth$RAIN <- prec$rain
