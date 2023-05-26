@@ -13,7 +13,6 @@ get.isda <- function(X = NULL, Y = NULL){
             "aluminium_extractable"="log.al_mehlich3","iron_extractable"="log.fe_mehlich3","sulphur_extractable"="log.s_mehlich3",
             "cec"="log.ecec.f")
   url <- "/home/jovyan/common_data/isda/raw/"
-  # aoi <- suppressWarnings(terra::vect(sf::st_as_sf(sf::st_as_sfc(sf::st_bbox(c(xmin = min(X), xmax = max(X), ymax = max(Y), ymin = min(Y)), crs = sf::st_crs(4326))))))
   outl <- list()
   soil <- NULL
   labs <- c("iso", "X", "Y", "depth", "lyr_center")
@@ -25,7 +24,6 @@ get.isda <- function(X = NULL, Y = NULL){
       d <- ifelse(par == "bdr" | par == "fcc", "0..200cm", d)
       lyr <- paste("sol",par,"m_30m",d,"2001..2017_v0.13_wgs84.tif",sep = "_")
       tif.cog <- paste0(url,lyr)
-      # data <- suppressWarnings(terra::crop(terra::rast(tif.cog), aoi))
       data <- suppressWarnings(terra::rast(tif.cog))
       q <- terra::extract(data, data.frame(x = X, y = Y), xy = TRUE)
       val <- q[,2]
@@ -44,9 +42,6 @@ get.isda <- function(X = NULL, Y = NULL){
         data <- terra::classify(data, cbind(fcc.atts$Value, fcc.atts$SLPF))
         q <- terra::extract(data, data.frame(x = X, y = Y), xy = TRUE)
         val <- q[,2]
-        # mx <- terra::minmax(data)[1]
-        # mn <- terra::minmax(data)[2]
-        # val <- (val - mn)/(mx - mn)
       }
       else val <- val
       loc <- paste0("https://nominatim.openstreetmap.org/reverse?lat=",Y,"&lon=",X,"&format=json")
@@ -119,12 +114,6 @@ isda2dssat <- function(isda = NULL){
                              ifelse(isda$texture %in% c("Silty Loam"), 0.14,
                                     ifelse(isda$texture %in% c("Loamy Sand"), 0.16,
                                            ifelse(isda$texture %in% c("Sand"), 0.19, NA)))))
-  # if(isda$texture %in% c("Clay", "Silty Clay", "Silty Clay Loam", "Silt Loam")){isda$SALB <- 0.12}
-  # else if (isda$texture %in% c("Sandy Clay", "Clay Loam", "Sandy Clay Loam", "Loam", "Sandy Loam", "Silt")){isda$SALB <- 0.13}
-  # else if (isda$texture %in% c("Silty Loam")){isda$SALB <- 0.14}
-  # else if (isda$texture %in% c("Loamy Sand")){isda$SALB <- 0.16}
-  # else if (isda$texture %in% c("Sand")){isda$SALB <- 0.19}
-  # else isda$SALB <- NA
   isda$SRGF <- 1*exp(-0.02 * as.numeric(isda$lyr_center))
   return(isda)
 }
