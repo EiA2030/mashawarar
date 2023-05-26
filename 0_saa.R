@@ -27,6 +27,8 @@ if(as.Date(end.Date) < as.Date("1990-01-01") | as.Date(end.Date) > as.Date(paste
 if(workers > 12){stop("Number of parallel workers not accepted. Please use a number lower than 12")}
     # Check that the necessary .MZX template file is there
 if(!file.exists(paste0("/home/jovyan/saa-use-case/data/inputs/dssat/xfiles/v", as.character(format(Sys.Date(), "%Y%m%d")), ".MZX"))) stop("Please, add an .MZX template")
+# Check that the necessary .CUL file with the varieties is there
+if(!file.exists(paste0("/home/jovyan/saa-use-case/data/inputs/dssat/culfiles/v", as.character(format(Sys.Date(), "%Y%m%d")), ".CUL"))) stop("Please, add an .CUL template")
 # # 2. Install requirements
 # packs <- data.frame("package" = c("tidyverse", "lubridate", "DSSAT", "doParallel", "foreach"),
 #                     "version" = c("1.3.2", "1.9.2", "0.0.6", "1.0.17", "1.5.2"))
