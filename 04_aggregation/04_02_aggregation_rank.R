@@ -1,6 +1,6 @@
 rank.aggregate <- function(years = NULL,
-                            jobs = 1,
-                            path.to.ex = NULL){
+                           jobs = 1,
+                           path.to.ex = NULL){
   for (year in years) {
     t <- data.table::fread(paste0(path.to.ex, "/", year, "/dssat_aggregate_", year, ".csv"))
     if(tail(t$pweek, n = 1) != 52){
@@ -48,7 +48,7 @@ rank.aggregate <- function(years = NULL,
   }
   safe.pdate <- data.frame("pdate_lower90" = lower.date, "pdate_mean" = avg.date, "pdate_upper90" = upper.date)
   safe.yield <- data.frame("yield_lower90" = lower.yld, "yield_mean" = avg.yld, "yield_upper90" = upper.yld, "yield_cv" = cv.yld)
-  out <- cbind(out[,1:4],safe.pdate)
+  out <- cbind(out[,1:5],safe.pdate)
   out <- cbind(out,safe.yield)
   
   ##  Rank (top 3) optimal variety and date by yield
@@ -68,6 +68,7 @@ rank.aggregate <- function(years = NULL,
     n <- as.data.frame(do.call(rbind, res))
     nn <- rbind(nn, n)
   }
+  nn <- nn[2:nrow(nn),] # remove NA initialization
   # Sort output by location
   nn <- nn[with(nn, order(X, Y)), ]
   nn$E <- ifelse(nn$X > 0, "E", "W")
